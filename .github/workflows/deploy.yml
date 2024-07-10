@@ -1,0 +1,27 @@
+name: Manual Trigger Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run the workflow on'
+        default: 'master'
+        required: true
+
+jobs:
+  run-on-master:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Validate branch
+        if: ${{ github.event.inputs.branch != 'master' }}
+        run: |
+          echo "This workflow can only be run on the master branch."
+          exit 1
+
+      - name: Run if on master branch
+        if: ${{ github.event.inputs.branch == 'master' }}
+        run: echo "Running workflow on the master branch."
