@@ -1,0 +1,33 @@
+name: Manual Trigger Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run the workflow on'
+        default: 'master'
+        required: true
+      GIT_TAG:
+        description: 'Which tag to deploy'
+        required: true
+        type: string
+
+jobs:
+  run-on-master:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.GIT_TAG }}
+
+      - name: Check if tag exists
+        run: |
+          if [ -z "$(git tag -l ${{ github.event.inputs.GIT_TAG }})" ]; then
+              echo "Tag provided does not exist"
+              exit 1
+          else
+            echo "Tag FOUND =====>"
+          fi
