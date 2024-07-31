@@ -12,7 +12,7 @@ on:
         required: true
         type: string
 
-run-name: "Test manual deploy on ${{ github.event.inputs.branch.toUpperCase() }}"
+run-name: "Test manual deploy on ${{ github.event.inputs.branch | upper }}"
 
 jobs:
   run-on-master:
