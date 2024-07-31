@@ -12,6 +12,8 @@ on:
         required: true
         type: string
 
+run-name: "Test manual deploy on ${{ github.event.inputs.branch.toUpperCase() }}"
+
 jobs:
   run-on-master:
     runs-on: ubuntu-latest
